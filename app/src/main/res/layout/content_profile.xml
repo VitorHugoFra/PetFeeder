@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.Profile"
+    tools:showIn="@layout/activity_profile">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="142dp"
+        android:layout_height="162dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="80dp"
+        android:src="@drawable/ic_black"
+        app:layout_constraintBottom_toTopOf="@+id/login_form"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.06999999" />
+
+
+    <Button
+        android:id="@+id/button_edit"
+        style="?android:textAppearanceSmall"
+        android:layout_width="30dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="189dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/ic_edit_black_24dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/login_form"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ScrollView
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="170dp">
+
+        <LinearLayout
+            android:id="@+id/email_login_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/about_the_user"
+                android:textColor="#000"/>
+
+            <AutoCompleteTextView
+
+                android:id="@+id/nameUsers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name"
+                android:drawableStart="@drawable/ic_person24dp"
+                android:maxLines="1"
+                android:singleLine="true" />
+            <Spinner
+                android:id="@+id/Sexo"
+                android:layout_width="352dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="10dp"
+                android:entries="@array/Sexo"
+                android:visibility="visible"
+                tools:layout_editor_absoluteX="40dp"
+                tools:layout_editor_absoluteY="410dp" />
+            <AutoCompleteTextView
+
+                android:id="@+id/nationality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/nationality"
+                android:drawableStart="@drawable/ic_brasil"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/about_the_pet"
+                android:textColor="#000"/>
+
+            <EditText
+                android:id="@+id/NamePet"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name_of_pet"
+                android:imeActionId="6"
+                android:drawableStart="@drawable/ic_pets_black_24dp"
+                android:imeActionLabel="Name of Pet"
+                android:imeOptions="actionUnspecified"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:inputType="text">
+
+            </EditText>
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="352dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="10dp"
+                android:entries="@array/Especie"
+                android:visibility="visible"
+                tools:layout_editor_absoluteX="40dp"
+                tools:layout_editor_absoluteY="410dp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

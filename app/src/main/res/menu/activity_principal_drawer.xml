@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+        android:id="@+id/Pet"
+        android:icon="@drawable/ic_pets_black_24dp"
+        android:title="@string/pet" />
+
+        <item
+            android:id="@+id/nav_Time"
+            android:icon="@drawable/timer"
+            android:title="@string/time_to_feed" />
+
+        <item
+            android:id="@+id/tools"
+            android:icon="@drawable/config"
+            android:title="@string/tools" />
+    </group>
+
+    <item android:title="Avaliação">
+        <menu>
+            <item
+                android:id="@+id/avaliar"
+                android:icon="@drawable/grade"
+                android:title="Avaliar App" />
+        </menu>
+    </item>
+
+</menu>
