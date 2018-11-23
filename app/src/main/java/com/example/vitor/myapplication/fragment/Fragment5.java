@@ -12,13 +12,25 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.example.vitor.myapplication.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class Fragment5 extends Fragment{
-    private ArrayList avaliar = new ArrayList();
+    double Nestrelas;
     private RatingBar r1;
     private Button b1;
+    Map Avaliacao = new HashMap();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("Avaliações");
+    FirebaseAuth mAuth1 = FirebaseAuth.getInstance();
+    final String id = Objects.requireNonNull(mAuth1.getCurrentUser()).getUid();
 
 
     @Nullable
@@ -31,9 +43,10 @@ public class Fragment5 extends Fragment{
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double Nestrelas;
                 Nestrelas = r1.getRating();
-                avaliar.add(Nestrelas);
+                Avaliacao.put("Avaliação", Nestrelas);
+                myRef.child(id).setValue(Avaliacao);
+
                 switch (v.getId()) {
                     case R.id.buttonava:
                         if (Nestrelas >= 2.5) {
@@ -45,10 +58,8 @@ public class Fragment5 extends Fragment{
                         break;
                     default:
                         Toast.makeText(getActivity(), "Erro", Toast.LENGTH_SHORT).show();
-
                         break;
                 }
-
             }
         });
 

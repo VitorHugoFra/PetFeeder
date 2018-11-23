@@ -127,6 +127,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
     }
 
+
     private void attemptLoginOrRegister(boolean isNewUser) {
         if (mAuthTask != null) {
             return;
@@ -344,7 +345,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
     }
 
-//Ver se está conectado a internet
     public boolean isOnline() {
         boolean conectado;
         ConnectivityManager conectivtyManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

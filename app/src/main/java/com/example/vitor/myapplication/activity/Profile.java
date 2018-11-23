@@ -6,10 +6,12 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,18 +25,23 @@ import android.widget.Toast;
 
 import com.example.vitor.myapplication.R;
 import com.example.vitor.myapplication.extra.Upload;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.Objects;
 
 
 public class Profile extends AppCompatActivity {
@@ -48,7 +55,7 @@ public class Profile extends AppCompatActivity {
     EditText nameProfile, nacionality, namePet;
     Spinner especie,sexo;
     ProgressBar mProgressBar;
-    static Map mapa = new HashMap();
+    Map mapa = new HashMap();
     private StorageReference mStorageRef;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("User");
@@ -83,7 +90,6 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(user()) {
-                    Toast.makeText(getApplicationContext(), "Save...", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(Profile.this, Principal.class);
                     startActivity(intent);
                 }
@@ -181,10 +187,12 @@ public class Profile extends AppCompatActivity {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
+
+
     private void uploadFile(final String id){
         if(mImageUri != null){
-            StorageReference fileRef = mStorageRef.child(id +"." +getFileExtension(mImageUri));
-            if(fileRef.putFile(mImageUri).isSuccessful()){
+            final StorageReference fileRef = mStorageRef.child(id +"." +getFileExtension(mImageUri));
+            /*if(fileRef.putFile(mImageUri).isSuccessful()){
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
@@ -198,8 +206,42 @@ public class Profile extends AppCompatActivity {
                     }
                 });
 
-            }
-            /*fileRef.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            }*/
+            fileRef.putFile(mImageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception
+                {
+                    if (!task.isSuccessful())
+                    {
+                        throw task.getException();
+                    }
+                    return fileRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task)
+                {
+                    if (task.isSuccessful())
+                    {
+                        Uri downloadUri = task.getResult();
+
+                        Upload upload = new Upload(id +"." +getFileExtension(mImageUri), downloadUri.toString());
+
+                        mapa.put("NameImagem",upload.getName());
+                        mapa.put("UrlImagem", upload.getImageUrl());
+                        Toast.makeText(getApplicationContext(), "Save...", Toast.LENGTH_LONG).show();
+                        myRef.child(id).setValue(mapa);
+
+                        myRef.child(id).setValue(mapa);
+                    } else
+                    {
+                        Toast.makeText(Profile.this, "upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }/*
+            fileRef.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     //taskSnapshot.getUploadSessionUri().toString() Aqui
@@ -207,14 +249,12 @@ public class Profile extends AppCompatActivity {
                     //taskSnapshot.getMetadata().getReference().getDownloadUrl().getResult().toString();//Aqui
                     //taskSnapshot.getMetadata().getReference().getDownloadUrl().isSuccessful();//Aqui
                     //mImageUri.getUserInfo().toString();
+                    Upload upload = new Upload(id +"." +getFileExtension(mImageUri), Objects.requireNonNull(taskSnapshot.getUploadSessionUri()).toString());
+                    mapa.put("NameImagem",upload.getName());
+                    mapa.put("UrlImagem", upload.getImageUrl());
+                    Toast.makeText(getApplicationContext(), "Save...", Toast.LENGTH_LONG).show();
+                    myRef.child(id).setValue(mapa);
 
-
-                            Upload upload = new Upload(id +"." +getFileExtension(mImageUri), uri.toString());
-                            mapa.put("NameImagem",upload.getName());
-                            mapa.put("UrlImagem", upload.getImageUrl());
-
-
-                    c
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -222,12 +262,12 @@ public class Profile extends AppCompatActivity {
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(getApplicationContext(), "Erro", Toast.LENGTH_LONG).show();
                 }
-            });*/
+            });
 
         }else {
             Toast.makeText(getApplicationContext(), "Sem arquivo", Toast.LENGTH_LONG).show();
 
         }
 
-    }
+    */}
 }

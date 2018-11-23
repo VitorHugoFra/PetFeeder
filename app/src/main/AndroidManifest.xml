@@ -43,7 +43,8 @@
             android:name=".activity.Principal"
             android:label="PetFeeder"
             android:theme="@style/AppTheme" />
-        <receiver android:name=".extra.AlarmReceiver"/>
+
+        <receiver android:name=".extra.AlarmReceiver" />
 
         <activity
             android:name=".activity.SettingsActivity"

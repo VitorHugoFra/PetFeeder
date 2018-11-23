@@ -4,10 +4,11 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
         <item
-        android:id="@+id/Pet"
-        android:icon="@drawable/ic_pets_black_24dp"
-        android:title="@string/pet" />
+            android:id="@+id/Home"
+            android:icon="@drawable/home"
+            android:title="@string/home"/>
 
         <item
             android:id="@+id/nav_Time"
@@ -17,7 +18,11 @@
         <item
             android:id="@+id/tools"
             android:icon="@drawable/config"
-            android:title="@string/tools" />
+            android:title="Configuraçoes" />
+        <item
+            android:id="@+id/Pet"
+            android:icon="@drawable/ic_pets_black_24dp"
+            android:title="Em Breve" />
     </group>
 
     <item android:title="Avaliação">

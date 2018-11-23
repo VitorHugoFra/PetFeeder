@@ -8,10 +8,7 @@
     <item
         android:id="@+id/person"
         android:icon="@drawable/dados"
-        android:title="Grafics" />
-    <item
-        android:id="@+id/sair"
-        android:icon="@drawable/info"
-        android:title="About" />
+        android:title="Graph" />
+
 
 </menu>

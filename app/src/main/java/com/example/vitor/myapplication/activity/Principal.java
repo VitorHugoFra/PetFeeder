@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,14 +25,16 @@ import com.example.vitor.myapplication.fragment.Fragment1;
 import com.example.vitor.myapplication.fragment.Fragment2;
 import com.example.vitor.myapplication.fragment.Fragment5;
 import com.example.vitor.myapplication.fragment.HomeFragment;
-import com.example.vitor.myapplication.fragment.PersonFragment;
+import com.example.vitor.myapplication.fragment.GraphFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.tapadoo.alerter.Alerter;
-import com.tapadoo.alerter.OnHideAlertListener;
-import com.tapadoo.alerter.OnShowAlertListener;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.core.Context;
+import com.squareup.picasso.Picasso;
 
 public class Principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,7 +42,6 @@ public class Principal extends AppCompatActivity
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     MenuItem Perfil;
     MenuItem Sair;
-    String Nome = Profile.Name;
     FirebaseUser user1 = mAuth.getCurrentUser();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("User");
@@ -51,6 +53,8 @@ public class Principal extends AppCompatActivity
         setContentView(R.layout.activity_principal);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new HomeFragment()).commit();
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -64,12 +68,33 @@ public class Principal extends AppCompatActivity
         View head = navigationView.getHeaderView(0);
         TextView textsubTitle = head.findViewById(R.id.nav_header_subtitle);
         textsubTitle.setText(user1.getEmail());
-        TextView textTitle = head.findViewById(R.id.nav_header_title);
-        textTitle.setText(Nome);
+        final ImageView Imagem =head.findViewById(R.id.imageView);
+
+        final TextView textTitle = head.findViewById(R.id.nav_header_title);
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                final String id = mAuth.getCurrentUser().getUid();
+
+                String value = String.valueOf(dataSnapshot.child(id).child("Name").getValue());
+                String value1 = String.valueOf(dataSnapshot.child(id).child("UrlImagem").getValue());
+
+                Picasso.with(Principal.this).load(value1).into(Imagem);
+                textTitle.setText(value);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Erro" , Toast.LENGTH_LONG).show();
+
+            }
+        });
 
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(navListener);
+        //BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        //bottomNav.setOnNavigationItemSelectedListener(navListener);
 
     }
 
@@ -122,18 +147,23 @@ public class Principal extends AppCompatActivity
         Fragment selectedFragment = null;
 
         switch (item.getItemId()) {
-            case R.id.Pet:
+            case R.id.home:
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new Fragment1()).commit();
+                break;
+            case R.id.Pet:
+                Toast.makeText(getApplicationContext(), "Em breve" , Toast.LENGTH_LONG).show();
+
+                /*getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new Fragment1()).commit();*/
                 break;
             case R.id.nav_Time:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new Fragment2()).commit();
                 break;
             case R.id.tools:
-                Intent intent = new Intent(Principal.this, SettingsActivity.class);
-                startActivity(intent);
-                Principal.this.finish();
+                startActivity(new Intent(Principal.this, SettingsActivity.class));
 
                 break;
             case R.id.avaliar:
@@ -147,7 +177,7 @@ public class Principal extends AppCompatActivity
         return true;
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+    /*private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -159,49 +189,17 @@ public class Principal extends AppCompatActivity
                             selectedFragment = new HomeFragment();
                             break;
                         case R.id.person:
-                            selectedFragment = new PersonFragment();
+                            selectedFragment = new GraphFragment();
                             break;
-                        case R.id.sair:
-                            Toast.makeText(getApplicationContext(), "I didn't made" , Toast.LENGTH_LONG).show();
-                            selectedFragment = new PersonFragment();
-                            break;
+
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             selectedFragment).commit();
                     return true;
                 }
-            };
+            };*/
 
-    public void showAlerter(View v) {
-        Fragment selectedFragment = null;
 
-        Alerter.create(this)
-                .setTitle("Alimente o Pet")
-                .setText("Click aqui para editar")
-                .setIcon(R.drawable.ic_account)
-                .setBackgroundColorRes(R.color.color2)
-                .setDuration(4000)
-                .enableSwipeToDismiss() //seems to not work well with OnClickListener
-                .enableProgress(true)
-                .setProgressColorRes(R.color.colorPrimary)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                })
-                .setOnShowListener(new OnShowAlertListener() {
-                    @Override
-                    public void onShow() {
-                    }
-                })
-                .setOnHideListener(new OnHideAlertListener() {
-                    @Override
-                    public void onHide() {
-                    }
-                })
-                .show();
-    }
 }
 
 

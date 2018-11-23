@@ -9,21 +9,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="82dp"
-        android:layout_marginBottom="390dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="103dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="384dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:gravity="center_vertical"
         android:text="Que horas seu pet será alimentado: "
-        android:textColor="#000" />
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/startSetDialog"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/cancel"
         android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
-        android:layout_marginBottom="-400dp"
+        android:layout_marginBottom="72dp"
         android:background="@drawable/buttonslyle"
         android:text="Set Target Time"
         android:textColor="#ffff" />
@@ -43,8 +49,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="171dp"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="200dp"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="150dp"
         android:text="Sem alarme"
         android:textColor="#000" />
 </RelativeLayout>
